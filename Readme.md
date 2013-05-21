@@ -1,4 +1,3 @@
-
 # model-edit-dialog
 
   A simple component to edit a model inside a dialog
@@ -14,11 +13,12 @@ Create a new instance.
 The param ``model`` must be a instance of component/model,
 ``formschema`` like defined in nickjackson/forms.
 The object ``lang`` is optional and can override the default language.
-  {
-    save: 'save',
-    cancel: 'cancel',
-    title: 'Edit model'
-  }
+
+    {
+      save: 'save',
+      cancel: 'cancel',
+      title: 'Edit model'
+    }
 
 ## License
 
