@@ -2,14 +2,11 @@
   "name": "model-edit-dialog",
   "repo": "mikanda/model-edit-dialog",
   "description": "A simple component to edit a model inside a dialog",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "keywords": [],
   "dependencies": {
-    "mikanda/bootstrap-dialog": "*",
-    "luka5/bootstrap-buttons": "*",
     "luka5/forms": "0.3.1",
-    "component/domify": "*",
-    "component/event": "*"
+    "mikanda/yes-no-dialog": "0.0.1"
   },
   "development": {
     "component/model": "*"
