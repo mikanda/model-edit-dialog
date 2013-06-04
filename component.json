@@ -11,7 +11,7 @@
     "component/each": "0.0.1",
     "component/value": "1.1.0",
     "mikanda/yes-no-dialog": "0.0.1",
-    "brighthas/jade": "*"
+    "luka5/jade": "*"
   },
   "development": {
     "component/model": "*",
