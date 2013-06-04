@@ -14,23 +14,22 @@ function init () {
     surname: 'Quarki',
     email: 'e@mail.com'
   });
-  var formschema = {
-    title: {
-      title: "Title",
-      type: "String"
-    },
-    forename: {
-      title: "Forename",
-      type: "String"
-    },
-    surname: {
-      title: "Surname",
-      type: "String"
-    },
-    email: {
-      title: "Email",
-      type: "String"
-    }
-  };
-  modelEditDialog(user, formschema, {title: 'Change Model'});
+  var formTemplate =
+      [
+        'form.form-horizontal',
+        '  .control-group',
+        '    label.control-label Title:',
+        '    .controls',
+        '      input(type="text",value="",data-value="title",name="title")',
+        '  .control-group',
+        '    label.control-label Name:',
+        '    .controls.controls-row',
+        '      input.span2(type="text",value="",data-value="forename",name="forename")',
+        '      input.span2(type="text",value="",data-value="surname",name="surname")',
+        '  .control-group',
+        '    label.control-label Email:',
+        '    .controls',
+        '      input(type="text",value="",data-value="email",name="email")'
+      ].join('\n');
+  modelEditDialog(user, formTemplate, {title: 'Change Model'});
 }
