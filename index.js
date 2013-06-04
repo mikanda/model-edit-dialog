@@ -69,7 +69,7 @@ ModelEditDialog.prototype.save = function () {
       return;
     val = value(el);
     if (oldValue !== val)
-      self.model.attrs[key] = val;
+      self.model[key](val);
   });
   /*
    * save model
