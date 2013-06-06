@@ -10,8 +10,9 @@
     "component/query": "*",
     "component/each": "0.0.1",
     "component/value": "1.1.0",
-    "mikanda/yes-no-dialog": "0.0.1",
-    "luka5/jade": "*"
+    "mikanda/yes-no-dialog": "0.0.2",
+    "luka5/jade": "*",
+    "component/emitter": "1.0.0"
   },
   "development": {
     "component/model": "*",

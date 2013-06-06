@@ -7,14 +7,16 @@ var reactive = require('reactive'),
     domify = require('domify'),
     each = require('each'),
     value = require('value'),
-    query = require('query');
+    query = require('query'),
+    Emitter = require('emitter');
 
 /*
  * create new instance
  */
 function ModelEditDialog (model, template, lang) {
   var title,
-      tmp;
+      tmp,
+      self = this;
   /*
    * set default lang if not definied
    */
@@ -42,7 +44,7 @@ function ModelEditDialog (model, template, lang) {
   /*
    * make new bootstrap-dialog
    */
-  yesNoDialog(
+  var ynd = yesNoDialog(
     title,
     this.form,
     {
@@ -55,7 +57,14 @@ function ModelEditDialog (model, template, lang) {
     },
     lang
   );
+  ['close','hide'].forEach(function(event){
+    ynd.on(event, function () {
+      self.emit(event);
+    });
+  });
 };
+Emitter(ModelEditDialog.prototype);
+
 ModelEditDialog.prototype.save = function () {
   /*
    * get all input fields and update model

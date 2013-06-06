@@ -31,5 +31,14 @@ function init () {
         '    .controls',
         '      input(type="text",value="",data-value="email",name="email")'
       ].join('\n');
-  modelEditDialog(user, formTemplate, {title: 'Change Model'});
+  var med = modelEditDialog(user, formTemplate, {title: 'Change Model'});
+  med.on('close', function(){
+    console.log('close');
+  });
+  med.on('hide', function(){
+    console.log('hide');
+  });
+  med.on('show', function(){
+    console.log('show');
+  });
 }
