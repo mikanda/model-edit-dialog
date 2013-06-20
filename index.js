@@ -38,7 +38,7 @@ function ModelEditDialog (model, template, lang) {
   /*
    * create new form
    */
-  this.formEl = domify('<div>'+jade.compile(template, {})()+'<div>')[0];
+  this.formEl = domify('<div>'+jade.compile(template, {})()+'<div>');
   this.form = reactive(this.formEl, model);
 
   /*
