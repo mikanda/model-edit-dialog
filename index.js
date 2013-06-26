@@ -39,7 +39,7 @@ function ModelEditDialog (model, template, lang) {
    * create new form
    */
   this.formEl = domify('<div>'+jade.compile(template, {})()+'<div>');
-  this.form = reactive(this.formEl, model);
+  this.form = reactive(this.formEl, model, model);
 
   /*
    * make new bootstrap-dialog
@@ -69,17 +69,38 @@ ModelEditDialog.prototype.save = function () {
   /*
    * get all input fields and update model
    */
-  var self = this;
-  each(this.model.attrs, function(key, oldValue){
+  var self = this,
+      fn;
+  fn = function(key, oldValue){
     var val,
-        el;
-    el = query('[name='+key+']', self.formEl);
+        el,
+        part,
+        valObj;
+    if (
+      (typeof oldValue === 'object'
+      || typeof oldValue === 'array')
+      && !(oldValue instanceof Date))
+        each(oldValue, function (k, v) {
+          fn(key + '.' + k, v);
+        });
+    el = query('[name="'+key+'"]', self.formEl);
     if (!el)
       return;
     val = value(el);
-    if (oldValue !== val)
-      self.model[key](val);
-  });
+    if (oldValue !== val) {
+      key = key.split('.');
+      valObj = self.model[key[0]]();
+      if (key.length > 1) {
+        part = valObj;
+        for (var i = 1; i < key.length-1; i++)
+          part = part[key[i]];
+        part[key[key.length-1]] = val;
+      }
+      self.model[key[0]](valObj);
+    }
+  };
+
+  each(this.model.attrs, fn);
   /*
    * save model
    */
