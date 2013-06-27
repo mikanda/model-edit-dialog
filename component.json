@@ -12,7 +12,8 @@
     "component/value": "1.1.0",
     "mikanda/yes-no-dialog": "0.0.3",
     "luka5/jade": "*",
-    "component/emitter": "1.0.0"
+    "component/emitter": "1.0.0",
+    "component/object": "0.0.3"
   },
   "development": {
     "component/model": "*",

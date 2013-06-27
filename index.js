@@ -8,6 +8,7 @@ var reactive = require('reactive'),
     each = require('each'),
     value = require('value'),
     query = require('query'),
+    object = require('object'),
     Emitter = require('emitter');
 
 /*
@@ -75,14 +76,16 @@ ModelEditDialog.prototype.save = function () {
     var val,
         el,
         part,
-        valObj;
-    if (
-      (typeof oldValue === 'object'
-      || typeof oldValue === 'array')
-      && !(oldValue instanceof Date))
-        each(oldValue, function (k, v) {
-          fn(key + '.' + k, v);
-        });
+        valObj,
+        tmp;
+    if (oldValue instanceof Array)
+      oldValue = object.merge({}, oldValue);
+    if (typeof oldValue === 'object'
+        && !(oldValue instanceof Date))
+      each(oldValue, function (k, v) {
+        fn(key + '.' + k, v);
+      });
+
     el = query('[name="'+key+'"]', self.formEl);
     if (!el)
       return;
@@ -95,6 +98,8 @@ ModelEditDialog.prototype.save = function () {
         for (var i = 1; i < key.length-1; i++)
           part = part[key[i]];
         part[key[key.length-1]] = val;
+      } else {
+        valObj = val;
       }
       self.model[key[0]](valObj);
     }
