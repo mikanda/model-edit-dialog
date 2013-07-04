@@ -1,6 +1,7 @@
 function init () {
   var modelEditDialog = require('model-edit-dialog');
   var model = require('component-model');
+  var jade = require('luka5-jade');
 
   var User = model('User')
               .attr('id')
@@ -20,17 +21,18 @@ function init () {
         '  .control-group',
         '    label.control-label Title:',
         '    .controls',
-        '      input(type="text",value="",data-value="title",name="title")',
+        '      input(type="text",value="",value=title,name="title")',
         '  .control-group',
         '    label.control-label Name:',
         '    .controls.controls-row',
-        '      input.span2(type="text",value="",data-value="forename",name="forename")',
-        '      input.span2(type="text",value="",data-value="surname",name="surname")',
+        '      input.span2(type="text",value="",value=forename,name="forename")',
+        '      input.span2(type="text",value="",value=surname,name="surname")',
         '  .control-group',
         '    label.control-label Email:',
         '    .controls',
-        '      input(type="text",value="",data-value="email",name="email")'
+        '      input(type="text",value="",value=email,name="email")'
       ].join('\n');
+  formTemplate = jade.compile(formTemplate)(user.attrs);
   var med = modelEditDialog(user, formTemplate, {title: 'Change Model'});
   med.on('close', function(){
     console.log('close');

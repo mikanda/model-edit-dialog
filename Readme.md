@@ -8,10 +8,10 @@
 
 ## API
 
-### modelEditDialog(model, formschema, [lang]);
+### modelEditDialog(model, form, [lang]);
 Create a new instance.
 The param ``model`` must be a instance of component/model,
-``formschema`` like defined in nickjackson/forms.
+``form`` is the dom element of the form containing which will be displayed inside the dialog.
 The object ``lang`` is optional and can override the default language.
 
     {

@@ -1,15 +1,10 @@
 /*
  * require dependencies
  */
-var reactive = require('reactive'),
-    yesNoDialog = require('yes-no-dialog'),
-    jade = require('jade'),
+var yesNoDialog = require('yes-no-dialog'),
     domify = require('domify'),
-    each = require('each'),
-    value = require('value'),
-    query = require('query'),
-    object = require('object'),
-    Emitter = require('emitter');
+    Emitter = require('emitter'),
+    syncModel = require('sync-model');
 
 /*
  * create new instance
@@ -39,9 +34,7 @@ function ModelEditDialog (model, template, lang) {
   /*
    * create new form
    */
-  this.formEl = domify('<div>'+jade.compile(template, {})()+'<div>');
-  this.form = reactive(this.formEl, model, model);
-
+  this.form = domify(template);
   /*
    * make new bootstrap-dialog
    */
@@ -67,45 +60,7 @@ function ModelEditDialog (model, template, lang) {
 Emitter(ModelEditDialog.prototype);
 
 ModelEditDialog.prototype.save = function () {
-  /*
-   * get all input fields and update model
-   */
-  var self = this,
-      fn;
-  fn = function(key, oldValue){
-    var val,
-        el,
-        part,
-        valObj,
-        tmp;
-    if (oldValue instanceof Array)
-      oldValue = object.merge({}, oldValue);
-    if (typeof oldValue === 'object'
-        && !(oldValue instanceof Date))
-      each(oldValue, function (k, v) {
-        fn(key + '.' + k, v);
-      });
-
-    el = query('[name="'+key+'"]', self.formEl);
-    if (!el)
-      return;
-    val = value(el);
-    if (oldValue !== val) {
-      key = key.split('.');
-      valObj = self.model[key[0]]();
-      if (key.length > 1) {
-        part = valObj;
-        for (var i = 1; i < key.length-1; i++)
-          part = part[key[i]];
-        part[key[key.length-1]] = val;
-      } else {
-        valObj = val;
-      }
-      self.model[key[0]](valObj);
-    }
-  };
-
-  each(this.model.attrs, fn);
+  syncModel(this.form, this.model);
   /*
    * save model
    */
