@@ -6,7 +6,7 @@
   "keywords": [],
   "dependencies": {
     "component/domify": "1.0.0",
-    "mikanda/yes-no-dialog": "0.0.3",
+    "mikanda/yes-no-dialog": "0.0.4",
     "mikanda/sync-model": "0.2.1",
     "component/emitter": "1.0.0"
   },
