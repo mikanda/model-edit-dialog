@@ -9,7 +9,7 @@ var yesNoDialog = require('yes-no-dialog'),
 /*
  * create new instance
  */
-function ModelEditDialog (model, template, lang) {
+function ModelEditDialog (model, template, lang, opt) {
   var title,
       tmp,
       self = this;
@@ -30,6 +30,7 @@ function ModelEditDialog (model, template, lang) {
     delete lang.title;
   
   this.model = model;
+  this.opt = opt;
 
   /*
    * create new form
@@ -38,7 +39,7 @@ function ModelEditDialog (model, template, lang) {
   /*
    * make new bootstrap-dialog
    */
-  var ynd = yesNoDialog(
+  var ynd = this.ynd = yesNoDialog(
     title,
     this.form,
     {
@@ -60,17 +61,29 @@ function ModelEditDialog (model, template, lang) {
 Emitter(ModelEditDialog.prototype);
 
 ModelEditDialog.prototype.save = function () {
-  syncModel(this.form, this.model);
-  /*
-   * save model
-   */
-  this.model.save(function (err) {
-    if (err)
-      console.log('error saving model', err);
-  });
+  syncModel(this.form, this.model, function(errors) {
+    save.call(this, errors);
+  }, this, this.opt);
 };
 ModelEditDialog.prototype.cancel = function () {
 };
 module.exports = function (model, formschema, lang) {
   return new ModelEditDialog(model, formschema, lang);
 };
+
+function save (errors) {
+  var self = this;
+  if (errors && errors.length > 0) {
+    this.emit('error', errors);
+    this.ynd.show();
+  } else {
+    /*
+     * save model
+     */
+    this.model.save(function (err) {
+      self.emit('save', err);
+      if (err)
+        self.ynd.show();
+    });
+  }
+}
