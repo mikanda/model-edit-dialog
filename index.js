@@ -4,7 +4,12 @@
 var yesNoDialog = require('yes-no-dialog'),
     domify = require('domify'),
     Emitter = require('emitter'),
+    attr = require('attr'),
+    classes = require('classes'),
+    query = require('query'),
+    each = require('each'),
     syncModel = require('sync-model');
+
 
 /*
  * create new instance
@@ -67,6 +72,7 @@ ModelEditDialog.prototype.save = function () {
 };
 ModelEditDialog.prototype.cancel = function () {
 };
+
 module.exports = function (model, formschema, lang) {
   return new ModelEditDialog(model, formschema, lang);
 };
@@ -74,6 +80,7 @@ module.exports = function (model, formschema, lang) {
 function save (errors) {
   var self = this;
   if (errors && errors.length > 0) {
+    displayErrors.call(this, errors);
     this.emit('error', errors);
     this.ynd.show();
   } else {
@@ -82,8 +89,44 @@ function save (errors) {
      */
     this.model.save(function (err) {
       self.emit('save', err);
-      if (err)
+      clearErrors.call(this);
+      if (err) {
         self.ynd.show();
+        displayError.call(self);
+      }
     });
   }
+}
+
+function displayError () {
+  var errorBox = query('.alert', this.form);
+  classes(errorBox).remove('hidden');
+  errorBox.innerHTML = this.opt.error;
+}
+
+function displayErrors (errors) {
+  clearErrors.call(this);
+
+  var errorBox = query('.alert', this.form);
+  classes(errorBox).remove('hidden');
+  errorBox.innerHTML = this.opt.amandaError;
+
+  errors.forEach(function (err) {
+    var errorEl = query('[name="' + err.property + '"]', this.form);
+    attr(errorEl).set('title', err.message);
+    classes(errorEl).add('error');
+  });
+}
+
+function clearErrors () {
+  var errorBox = query('.alert', this.form);
+  if (errorBox) {
+    classes(errorBox).add('hidden');
+    errorBox.innerHTML = '';
+  }
+
+  each(query.all('.error', this.form), function (errorEl) {
+    attr(errorEl).set('title', '');
+    classes(errorEl).remove('error');
+  });
 }
