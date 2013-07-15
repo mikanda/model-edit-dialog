@@ -11,10 +11,14 @@ var yesNoDialog = require('yes-no-dialog'),
     syncModel = require('sync-model');
 
 
+module.exports = ModelEditDialog;
+
 /*
  * create new instance
  */
 function ModelEditDialog (model, template, lang, opt) {
+  if (!(this instanceof ModelEditDialog))
+    return new ModelEditDialog(model, template, lang, opt);
   var title,
       tmp,
       self = this;
@@ -71,10 +75,6 @@ ModelEditDialog.prototype.save = function () {
   }, this, this.opt);
 };
 ModelEditDialog.prototype.cancel = function () {
-};
-
-module.exports = function (model, formschema, lang) {
-  return new ModelEditDialog(model, formschema, lang);
 };
 
 function save (errors) {
