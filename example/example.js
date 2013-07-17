@@ -2,6 +2,7 @@ function init () {
   var modelEditDialog = require('model-edit-dialog');
   var model = require('component-model');
   var jade = require('luka5-jade');
+  var syncModel = require('sync-model');
 
   var User = model('User')
               .attr('id')
@@ -9,6 +10,7 @@ function init () {
               .attr('forename')
               .attr('surname')
               .attr('email');
+  User.use(syncModel());
   var user = new User({
     title: 'Mrs',
     forename: 'Quark',

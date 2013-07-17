@@ -72,7 +72,7 @@ Emitter(ModelEditDialog.prototype);
 ModelEditDialog.prototype.save = function () {
   var errors,
       self = this;
-  this.model = syncModel(this.form, this.model);
+  this.model.syncWith(this.form);
   if (!this.model.isValid()) {
     errors = this.model.errors;
     this.emit('error', errors);
