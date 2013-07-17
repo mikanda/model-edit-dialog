@@ -70,18 +70,13 @@ function ModelEditDialog (model, template, lang, opt) {
 Emitter(ModelEditDialog.prototype);
 
 ModelEditDialog.prototype.save = function () {
-  syncModel(this.form, this.model, function(errors) {
-    save.call(this, errors);
-  }, this, this.opt);
-};
-ModelEditDialog.prototype.cancel = function () {
-};
-
-function save (errors) {
-  var self = this;
-  if (errors && errors.length > 0) {
-    displayErrors.call(this, errors);
+  var errors,
+      self = this;
+  this.model = syncModel(this.form, this.model);
+  if (!this.model.isValid()) {
+    errors = this.model.errors;
     this.emit('error', errors);
+    displayErrors.call(this, errors);
     this.ynd.show();
   } else {
     /*
@@ -96,7 +91,9 @@ function save (errors) {
       }
     });
   }
-}
+};
+ModelEditDialog.prototype.cancel = function () {
+};
 
 function displayError () {
   var errorBox = query('.alert', this.form);
@@ -106,13 +103,18 @@ function displayError () {
 
 function displayErrors (errors) {
   clearErrors.call(this);
+  var errorBox,
+      errorEl,
+      self = this;
 
-  var errorBox = query('.alert', this.form);
+  errorBox = query('.alert', this.form);
   classes(errorBox).remove('hidden');
-  errorBox.innerHTML = this.opt.amandaError;
+  errorBox.innerHTML = this.opt.validationError;
 
   errors.forEach(function (err) {
-    var errorEl = query('[name="' + err.property + '"]', this.form);
+    errorEl = query('[name="' + err.attr + '"]', self.form);
+    if (!errorEl)
+      return;
     attr(errorEl).set('title', err.message);
     classes(errorEl).add('error');
   });
