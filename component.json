@@ -7,7 +7,6 @@
   "dependencies": {
     "component/domify": "1.0.0",
     "mikanda/yes-no-dialog": "0.1.0",
-    "mikanda/sync-model": "1.1.0",
     "component/classes": "1.1.2",
     "component/query": "0.0.1",
     "component/each": "0.0.1",

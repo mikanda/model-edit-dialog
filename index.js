@@ -7,8 +7,7 @@ var yesNoDialog = require('yes-no-dialog'),
     attr = require('attr'),
     classes = require('classes'),
     query = require('query'),
-    each = require('each'),
-    syncModel = require('sync-model');
+    each = require('each');
 
 
 module.exports = ModelEditDialog;
