@@ -73,24 +73,26 @@ ModelEditDialog.prototype.save = function () {
   var errors,
       self = this;
   this.model.syncWith(this.form);
-  if (!this.model.isValid()) {
-    errors = this.model.errors;
-    this.emit('error', errors);
-    displayErrors.call(this, errors);
-    this.ynd.show();
-  } else {
-    /*
-     * save model
-     */
-    this.model.save(function (err) {
+  /*
+   * save model
+   */
+  this.model.save(function (err) {
+    clearErrors.call(self);
+    if (err && err.message === 'validation failed') {
+      errors = self.model.errors;
+      self.emit('error', errors);
+      displayErrors.call(self, errors);
+      self.ynd.show();
+
+    } else if (err) {
       self.emit('save', err);
-      clearErrors.call(this);
-      if (err) {
-        self.ynd.show();
-        displayError.call(self);
-      }
-    });
-  }
+      self.ynd.show();
+      displayError.call(self);
+
+    } else {
+      self.emit('save');
+    }
+  });
 };
 ModelEditDialog.prototype.cancel = function () {
 };
